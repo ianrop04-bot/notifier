@@ -1,38 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Push Notifications</title>
+<meta charset="UTF-8">
+<title>Notification</title>
 </head>
 <body>
 
-    <h1>Push Notifications</h1>
+<button onclick="requestPermission()">Enable Notifications</button>
+<button onclick="sendNotification()">Send Notification</button>
 
-    <button onclick="enable()">Enable Notifications</button>
-    <br><br>
-    <button id="btns" onclick="notify('Success', 'It worked!')" disabled>Send Notification</button>
+<script>
+function requestPermission() {
+    Notification.requestPermission();
+}
 
-    <p id="msg"></p>
-
-    <script>
-        function enable() {
-            Notification.requestPermission().then(p => {
-                if (p === 'granted') {
-                    document.getElementById('btns').disabled = false;
-                    document.getElementById('msg').innerText = 'Ready! Click the button.';
-                    new Notification('Enabled!', { body: 'Notifications are now active.' });
-                } else {
-                    document.getElementById('msg').innerText = 'Permission denied.';
-                }
+function sendNotification() {
+    if (Notification.permission === "granted") {
+        navigator.serviceWorker.register('/sw.js').then(function(reg) {
+            reg.showNotification("Hello!", {
+                body: "This is a push notification"
             });
-        }
-
-        function notify(title, body) {
-            new Notification(title, { body: body });
-        }
-
-        notify('Dup','Yoirm')
-    </script>
+        });
+    }
+}
+</script>
 
 </body>
 </html>
