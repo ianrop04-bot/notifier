@@ -18,7 +18,8 @@ function sendNotification() {
     if (Notification.permission === "granted") {
         navigator.serviceWorker.register('/sw.js').then(function(reg) {
             reg.showNotification("Hello!", {
-                body: "This is a push notification"
+                body: "This is a push notification",
+                vibrate:[200,100,200]
             });
         });
     }
